@@ -1,7 +1,6 @@
 name: vcclient-dev-bsc  # Change this to whatever you want to name your environment
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python=3.10  # or match your desired Python version
   - pip
