@@ -81,7 +81,13 @@ class MMVC_Rest:
                 print("Locating model_dir_static failed", e)
 
             if sys.platform.startswith("darwin"):
-                p1 = os.path.dirname(sys._MEIPASS)
+                # TA-change 
+                #p1 = os.path.dirname(sys._MEIPASS)
+                if hasattr(sys, '_MEIPASS'):
+                    p1 = os.path.dirname(sys._MEIPASS)
+                else:
+                    p1 = os.path.dirname(__file__)  # Use the current file's directory when not bundled
+
                 p2 = os.path.dirname(p1)
                 p3 = os.path.dirname(p2)
                 model_dir = os.path.join(p3, voiceChangerParams.model_dir)
