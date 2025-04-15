@@ -2,6 +2,7 @@ import torch
 from torch import device
 from voice_changer.RVC.embedder.Embedder import Embedder
 from fairseq import checkpoint_utils
+import time
 
 
 class FairseqHubert(Embedder):
@@ -38,6 +39,11 @@ class FairseqHubert(Embedder):
 
         with torch.no_grad():
             logits = self.model.extract_features(**inputs)
+
+            # TA - getting logits
+            print(f'time: {time.time()}')
+            print(logits[0])
+
             if useFinalProj:
                 feats = self.model.final_proj(logits[0])
             else:
