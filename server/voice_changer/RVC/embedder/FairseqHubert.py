@@ -41,8 +41,8 @@ class FairseqHubert(Embedder):
             logits = self.model.extract_features(**inputs)
 
             # TA - getting logits
-            print(f'time: {time.time()}')
-            print(logits[0])
+            #print(f'time: {time.time()}')
+            #print(logits[0])
 
             if useFinalProj:
                 feats = self.model.final_proj(logits[0])

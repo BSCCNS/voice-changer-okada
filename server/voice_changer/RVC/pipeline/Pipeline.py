@@ -20,8 +20,14 @@ from voice_changer.RVC.inferencer.OnnxRVCInferencerNono import OnnxRVCInferencer
 from voice_changer.RVC.pitchExtractor.PitchExtractor import PitchExtractor
 from voice_changer.utils.Timer import Timer2
 
+import pandas as pd
+import joblib
+
 logger = VoiceChangaerLogger.get_instance().getLogger()
 
+print('loading surrogate model for umap')
+surr_path = "/Users/tomasandrade/Documents/BSC/ICHOIR/okada/voice-changer-okada/server/voice_changer/RVC/projection/surr2D.sav"
+umap_surrogate = joblib.load(surr_path)
 
 class Pipeline(object):
     embedder: Embedder
@@ -182,6 +188,16 @@ class Pipeline(object):
             # embedding
             feats = self.extractFeatures(feats, embOutputLayer, useFinalProj)
             t.record("extract-feats")
+            # extract HERE
+            
+            exportable = pd.DataFrame(feats[0].cpu())
+            print(f"shape exportable {exportable.shape}")
+            print(exportable.head())
+
+            feat_projected = umap_surrogate(exportable.values)
+
+            print(feat_projected.shape)
+            
 
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
