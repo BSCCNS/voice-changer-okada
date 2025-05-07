@@ -22,6 +22,7 @@ from voice_changer.utils.Timer import Timer2
 
 import pandas as pd
 import joblib
+import time
 
 logger = VoiceChangaerLogger.get_instance().getLogger()
 
@@ -192,13 +193,13 @@ class Pipeline(object):
             
             exportable = pd.DataFrame(feats[0].cpu())
             print(f"shape exportable {exportable.shape}")
-            print(exportable.head())
+            feat_projected = umap_surrogate.predict(exportable.values)
 
-            feat_projected = umap_surrogate(exportable.values)
+            t0 = time.time()
+            print(f'----------------- time {t0}')
+            print(feat_projected)
 
-            print(feat_projected.shape)
             
-
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
             if search_index:
