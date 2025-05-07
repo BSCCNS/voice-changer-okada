@@ -26,7 +26,7 @@ import joblib
 logger = VoiceChangaerLogger.get_instance().getLogger()
 
 print('loading surrogate model for umap')
-surr_path = "/Users/tomasandrade/Documents/BSC/ICHOIR/okada/voice-changer-okada/server/voice_changer/RVC/projection/surr2D.sav"
+surr_path = "/Users/tomasandrade/Documents/BSC/ICHOIR/okada/voice-changer-okada/server/voice_changer/RVC/projection/umap_tiny_2D_surr.sav"
 umap_surrogate = joblib.load(surr_path)
 
 class Pipeline(object):
