@@ -191,13 +191,20 @@ class Pipeline(object):
             t.record("extract-feats")
             # extract HERE
             
-            exportable = pd.DataFrame(feats[0].cpu())
-            print(f"shape exportable {exportable.shape}")
-            feat_projected = umap_surrogate.predict(exportable.values)
+
+            # exportable = pd.DataFrame(feats[0].cpu())
+            # print(f"shape exportable {exportable.shape}")
+            # feat_projected = umap_surrogate.predict(exportable.values)
+
+            #exportable = pd.DataFrame(feats[0].cpu())
+            #print(f"shape exportable {exportable.shape}")
+            #feats_cpu = feats[0].cpu()
+            feat_projected = umap_surrogate.predict(feats[0].cpu())
+            print(f"shape exportable {feat_projected.shape}")
 
             t0 = time.time()
             print(f'----------------- time {t0}')
-            print(feat_projected)
+            #print(feat_projected)
 
             
             # Index - feature抽出
