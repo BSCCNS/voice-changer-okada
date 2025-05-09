@@ -20,6 +20,8 @@ from voice_changer.RVC.inferencer.OnnxRVCInferencerNono import OnnxRVCInferencer
 from voice_changer.RVC.pitchExtractor.PitchExtractor import PitchExtractor
 from voice_changer.utils.Timer import Timer2
 
+from voice_changer.websocket.socketudp import SocketUDP
+
 import pandas as pd
 import joblib
 import time
@@ -204,6 +206,13 @@ class Pipeline(object):
 
             t0 = time.time()
             print(f'----------------- time {t0}')
+
+            with SocketUDP("localhost", debug= None) as socket:
+                #socket.send({0: {random.randint(0, 10): 
+                # [random.random(), random.random(), random.random()]}}, i)
+                socket.send({0: {t0: feat_projected}})
+
+    
             #print(feat_projected)
 
             
