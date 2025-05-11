@@ -7,6 +7,7 @@ from socket import *
 # Tiempo mínimo entre un envío y el siguiente
 MIN_TIME = 4200000 # 240fps
 
+
 class SocketUDP():
     """Clase para enviar datos por UDP
 
@@ -99,6 +100,13 @@ def _debug_vr(message):
                 pass # Check min/max values
     
     return True
+
+def send_array(array):
+    data_list = list(array)
+
+    for item in data_list:
+        with SocketUDP("localhost", debug= None) as socket:
+            socket.send(item)
 
 if __name__ == "__main__":
 
