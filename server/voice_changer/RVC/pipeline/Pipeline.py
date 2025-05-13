@@ -25,12 +25,19 @@ from voice_changer.websocket.socketudp import send_array
 import pandas as pd
 import joblib
 import time
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = VoiceChangaerLogger.get_instance().getLogger()
 
 print('loading surrogate model for umap')
-surr_path = "/Users/tomasandrade/Documents/BSC/ICHOIR/okada/voice-changer-okada/server/voice_changer/RVC/projection/umap_2D_surr.sav"
-umap_surrogate = joblib.load(surr_path)
+#surr_path = "/Users/tomasandrade/Documents/BSC/ICHOIR/okada/voice-changer-okada/server/voice_changer/RVC/projection/umap_2D_surr.sav"
+path_surr = os.getenv('path_surr')
+print(path_surr)
+umap_surrogate = joblib.load(path_surr)
 
 class Pipeline(object):
     embedder: Embedder
@@ -206,7 +213,7 @@ class Pipeline(object):
 
             t0 = time.time()
             print(f'----------------- time {t0}')
-            send_array(feat_projected)
+            send_array(list(feat_projected)[0])
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
