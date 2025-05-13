@@ -214,7 +214,10 @@ class Pipeline(object):
 
             t0 = time.time()
             print(f'----------------- time {t0}')
-            send_array(list(feat_projected)[0])
+            N_PAD = 8 # HARD CODED!!
+            list_to_send = list(feat_projected)[N_PAD:-N_PAD]
+            for item in list_to_send:
+                send_array(item)
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
