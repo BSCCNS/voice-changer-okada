@@ -210,6 +210,7 @@ class Pipeline(object):
             #feats_cpu = feats[0].cpu()
             feat_projected = umap_surrogate.predict(feats[0].cpu())
             print(f"shape exportable {feat_projected.shape}")
+            print(f"self.t_pad {self.t_pad}")
 
             t0 = time.time()
             print(f'----------------- time {t0}')
