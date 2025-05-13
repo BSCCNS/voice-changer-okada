@@ -47,26 +47,11 @@ python3 MMVCServerSIO.py -p 18888 --https true \
 
 ## Extracting latent space
 
-We need to look at the embedder of the RVC model, which is implemented by the class `FairseqHubert` inside
-
-```
-server/voice_changer/RVC/embedder/FairseqHubert.py
-```
-
-Just for testing, I’m printing the embedding, stored in logits defined in [line] 
-(https://github.com/BSCCNS/voice-changer-okada/blob/14101c1bf54037add3b6c116c6d6bbda73068b60/server/voice_changer/RVC/embedder/FairseqHubert.py#L41
-)
-
-You will see this on the terminal, alongside with the timestamp which is useful to measure lag. 
-
-Another possible point of extraction is on the `Pipeline.py` in `RVC` class (line 182)
+To extract the embedding for the LS we go to the `Pipeline` class in `server/voice_changer/RVC/pipeline/Pipeline.py`
 ```python
 # embedding
 feats = self.extractFeatures(feats, embOutputLayer, useFinalProj)
 t.record("extract-feats")
 ```
-however, a little later the features are projected if we are using an index file -- not sure which should we use, the raw features or the index features. In line 254 we have the final features used for audio generation, so maybe those!
-** Remember** that these features are in the GPU so we must bring them to CPU and also reshape them so they fit a dataframe. I think the `feats_buffer` variable (line 257) does that...what I don't know is why it is returned! 
 
-
-Now, this tensor needs to go through the projection with Umap, and then rendering with TouchDesigner or something similar
+Then, the tensor `feats` goes through a 3D projection with Umap (we use a surrogate for low latency) and then transmitted by UDP. 
