@@ -79,3 +79,5 @@ beatrice_internal_api.cp310-win_amd64.pyd
 server/model_dir_static/Beatrice-JVS
 
 server/.env
+
+.DS_Store
