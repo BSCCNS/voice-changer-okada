@@ -210,14 +210,18 @@ class Pipeline(object):
             #feats_cpu = feats[0].cpu()
             feat_projected = umap_surrogate.predict(feats[0].cpu())
             print(f"shape exportable {feat_projected.shape}")
-            print(f"self.t_pad {self.t_pad}")
 
             t0 = time.time()
             print(f'----------------- time {t0}')
             N_PAD = 4 # HARD CODED!!
-            list_to_send = list(feat_projected)[N_PAD:-N_PAD]
-            for item in list_to_send:
-                send_array(item)
+            trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
+
+            print(f"shape trim_feat_projected {trim_feat_projected.shape}")
+            #list_to_send = list(feat_projected)[N_PAD:-N_PAD]
+
+            for row in trim_feat_projected:
+                print(row)
+                send_array(row)
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
