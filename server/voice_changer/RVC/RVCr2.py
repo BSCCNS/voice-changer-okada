@@ -243,7 +243,7 @@ class RVCr2(VoiceChangerModel):
                 outSize,
             )
             # result = audio_out.detach().cpu().numpy() * np.sqrt(vol)
-            # result = audio_out[-outSize:].detach().cpu().numpy() * np.sqrt(vol)
+            #result = audio_out[-outSize:].detach().cpu().numpy() * np.sqrt(vol)
             # TA change: HERE WE SET THE OUTPUT VOLUME TO ZERO
             result = 0 * audio_out[-outSize:].detach().cpu().numpy() 
 

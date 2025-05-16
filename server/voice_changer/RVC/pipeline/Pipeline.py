@@ -314,7 +314,9 @@ class Pipeline(object):
             t.record("post-process")
             # torch.cuda.empty_cache()
         # print("EXEC AVERAGE:", t.avrSecs)
-        return audio1, pitchf_buffer, feats_buffer
+        #return audio1, pitchf_buffer, feats_buffer
+        # [TA change] return None instead of audio
+        return None, pitchf_buffer, feats_buffer
 
     def __del__(self):
         del self.embedder
