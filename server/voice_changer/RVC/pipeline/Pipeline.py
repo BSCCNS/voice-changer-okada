@@ -213,7 +213,7 @@ class Pipeline(object):
 
             t0 = time.time()
             print(f'----------------- time {t0}')
-            N_PAD = 4 # HARD CODED!!
+            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the guy
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")

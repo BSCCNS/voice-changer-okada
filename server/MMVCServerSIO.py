@@ -123,6 +123,8 @@ PORT = args.p
 
 def localServer(logLevel: str = "critical", key_path: str | None = None, cert_path: str | None = None):
     try:
+        print(f'[TA debug] here at local server uvicorn run coming up')
+        print(f'[TA debug] command to run ' + f"{os.path.basename(__file__)[:-3]}:app_socketio")
         uvicorn.run(
             f"{os.path.basename(__file__)[:-3]}:app_socketio",
             host=HOST,
@@ -138,9 +140,11 @@ def localServer(logLevel: str = "critical", key_path: str | None = None, cert_pa
 
 if __name__ == "MMVCServerSIO":
     mp.freeze_support()
+    
 
     voiceChangerManager = VoiceChangerManager.get_instance(voiceChangerParams)
     app_fastapi = MMVC_Rest.get_instance(voiceChangerManager, voiceChangerParams, args.allowed_origins, PORT)
+    print('[TA debug] socketio')
     app_socketio = MMVC_SocketIOApp.get_instance(app_fastapi, voiceChangerManager, args.allowed_origins, PORT)
 
 
@@ -149,6 +153,7 @@ if __name__ == "__mp_main__":
     printMessage("The server process is starting up.", level=2)
 
 if __name__ == "__main__":
+
     mp.freeze_support()
 
     logger.debug(args)
@@ -233,6 +238,7 @@ if __name__ == "__main__":
             printMessage(f"http://localhost:{EX_PORT}/", level=1)
     else:  # 直接python起動
         if args.https == 1:
+            print('TA debug: this creates and UDP socket on port 80')
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect((args.test_connect, 80))
             hostname = s.getsockname()[0]
@@ -241,10 +247,13 @@ if __name__ == "__main__":
         else:
             printMessage(f"http://localhost:{PORT}/", level=1)
 
+    print(f'[TA debug] args.https: {args.https}')
+
     # サーバ起動
     if args.https:
         # HTTPS サーバ起動
         try:
+            print(f'[TA debug] here at localServer')
             localServer(args.logLevel, key_path, cert_path)
         except Exception as e:
             logger.error(f"[Voice Changer] Web Server(https) Launch Exception, {e}")

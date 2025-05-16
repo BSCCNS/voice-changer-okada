@@ -45,6 +45,7 @@ def createPipeline(params: VoiceChangerParams, modelSlot: RVCModelSlot, gpu: int
     indexPath = os.path.join(params.model_dir, str(modelSlot.slotIndex), os.path.basename(modelSlot.indexFile))
     index = _loadIndex(indexPath)
 
+    print('[TA debug] here it calls the pipeline')
     pipeline = Pipeline(
         embedder,
         inferencer,
