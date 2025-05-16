@@ -245,19 +245,21 @@ class RVCr2(VoiceChangerModel):
             # result = audio_out.detach().cpu().numpy() * np.sqrt(vol)
             #result = audio_out[-outSize:].detach().cpu().numpy() * np.sqrt(vol)
             # TA change: HERE WE SET THE OUTPUT VOLUME TO ZERO
-            result = 0 * audio_out[-outSize:].detach().cpu().numpy() 
+            # result = 0 * audio_out[-outSize:].detach().cpu().numpy() 
 
-            result = cast(
-                AudioInOut,
-                resampy.resample(
-                    result,
-                    self.slotInfo.samplingRate,
-                    self.outputSampleRate,
-                    filter="kaiser_fast",
-                ),
-            )
+            # result = cast(
+            #     AudioInOut,
+            #     resampy.resample(
+            #         result,
+            #         self.slotInfo.samplingRate,
+            #         self.outputSampleRate,
+            #         filter="kaiser_fast",
+            #     ),
+            # )
 
-            return result
+            return None #result
+        
+
         except DeviceCannotSupportHalfPrecisionException as e:  # NOQA
             logger.warn("[Device Manager] Device cannot support half precision. Fallback to float....")
             self.deviceManager.setForceTensor(True)

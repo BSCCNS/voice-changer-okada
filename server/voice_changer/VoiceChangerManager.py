@@ -370,6 +370,7 @@ class VoiceChangerManager(ServerDeviceCallbacks):
             return receivedData, []
 
         if hasattr(self, "voiceChanger") is True:
+            # TA debug: this is calling VoiceChangerV2. It's setup to return None
             return self.voiceChanger.on_request(receivedData)
         else:
             logger.info("Voice Change is not loaded. Did you load a correct model?")

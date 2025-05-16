@@ -246,43 +246,50 @@ class VoiceChangerV2(VoiceChangerIF):
                     if hasattr(self, "sola_buffer") is True:
                         np.set_printoptions(threshold=10000)
                         audio_offset = -1 * (sola_search_frame + crossfade_frame + block_frame)
-                        audio = audio[audio_offset:]
+                        #audio = audio[audio_offset:]
+                        # TA change
+                        audio = None
 
                         # SOLA algorithm from https://github.com/yxlllc/DDSP-SVC, https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI
-                        cor_nom = np.convolve(
-                            audio[: crossfade_frame + sola_search_frame],
-                            np.flip(self.sola_buffer),
-                            "valid",
-                        )
-                        cor_den = np.sqrt(
-                            np.convolve(
-                                audio[: crossfade_frame + sola_search_frame] ** 2,
-                                np.ones(crossfade_frame),
-                                "valid",
-                            )
-                            + 1e-3
-                        )
-                        sola_offset = int(np.argmax(cor_nom / cor_den))
-                        sola_end = sola_offset + block_frame
-                        output_wav = audio[sola_offset:sola_end].astype(np.float64)
-                        output_wav[:crossfade_frame] *= self.np_cur_strength
-                        output_wav[:crossfade_frame] += self.sola_buffer[:]
+                        # TA change
+                        # cor_nom = np.convolve(
+                        #     audio[: crossfade_frame + sola_search_frame],
+                        #     np.flip(self.sola_buffer),
+                        #     "valid",
+                        # )
+                        # cor_den = np.sqrt(
+                        #     np.convolve(
+                        #         audio[: crossfade_frame + sola_search_frame] ** 2,
+                        #         np.ones(crossfade_frame),
+                        #         "valid",
+                        #     )
+                        #     + 1e-3
+                        # )
+                        # sola_offset = int(np.argmax(cor_nom / cor_den))
+                        # sola_end = sola_offset + block_frame
+                        # output_wav = audio[sola_offset:sola_end].astype(np.float64)
+                        # output_wav[:crossfade_frame] *= self.np_cur_strength
+                        # output_wav[:crossfade_frame] += self.sola_buffer[:]
 
-                        result = output_wav
+                        #result = output_wav
+                        result = None
                     else:
                         logger.info("[Voice Changer] warming up... generating sola buffer.")
                         result = np.zeros(4096).astype(np.int16)
 
                     t.record("sora")
 
-                    if hasattr(self, "sola_buffer") is True and sola_offset < sola_search_frame:
-                        offset = -1 * (sola_search_frame + crossfade_frame - sola_offset)
-                        end = -1 * (sola_search_frame - sola_offset)
-                        sola_buf_org = audio[offset:end]
-                        self.sola_buffer = sola_buf_org * self.np_prev_strength
-                    else:
-                        self.sola_buffer = audio[-crossfade_frame:] * self.np_prev_strength
-                        # self.sola_buffer = audio[- crossfade_frame:]
+                    # TA change
+                    # if hasattr(self, "sola_buffer") is True and sola_offset < sola_search_frame:
+                    #     offset = -1 * (sola_search_frame + crossfade_frame - sola_offset)
+                    #     end = -1 * (sola_search_frame - sola_offset)
+                    #     sola_buf_org = audio[offset:end]
+                    #     self.sola_buffer = sola_buf_org * self.np_prev_strength
+                    # else:
+                    #     # self.sola_buffer = audio[-crossfade_frame:] * self.np_prev_strength
+                    #     # self.sola_buffer = audio[- crossfade_frame:]
+                    #     # TA change
+                    self.sola_buffer = None
 
                     t.record("post")
 
@@ -290,28 +297,31 @@ class VoiceChangerV2(VoiceChangerIF):
 
             # 後処理
             with Timer2("post-process", False) as t:
-                result = result.astype(np.int16)
+                # TA change
+                #result = result.astype(np.int16)
+                result = None
 
-                print_convert_processing(f" Output data size of {result.shape[0]}/{processing_sampling_rate}hz {result .shape[0]}/{self.settings.outputSampleRate}hz")
+                #print_convert_processing(f" Output data size of {result.shape[0]}/{processing_sampling_rate}hz {result .shape[0]}/{self.settings.outputSampleRate}hz")
 
-                if receivedData.shape[0] != result.shape[0]:
-                    # print("TODO FIX:::::PADDING", receivedData.shape[0], result.shape[0])
-                    if self.voiceChanger.voiceChangerType == "LLVC":
-                        outputData = result
-                    else:
-                        outputData = pad_array(result, receivedData.shape[0])
+                # if receivedData.shape[0] != result.shape[0]:
+                #     # print("TODO FIX:::::PADDING", receivedData.shape[0], result.shape[0])
+                #     if self.voiceChanger.voiceChangerType == "LLVC":
+                #         outputData = result
+                #     else:
+                #         outputData = pad_array(result, receivedData.shape[0])
 
-                    pass
-                else:
-                    outputData = result
+                #     pass
+                # else:
+                #     outputData = result
 
-                if self.settings.recordIO == 1:
-                    self.ioRecorder.writeInput(receivedData)
-                    self.ioRecorder.writeOutput(outputData.tobytes())
+                # if self.settings.recordIO == 1:
+                #     self.ioRecorder.writeInput(receivedData)
+                #     self.ioRecorder.writeOutput(outputData.tobytes())
 
+            outputData = None
             postprocess_time = t.secs
 
-            print_convert_processing(f" [fin] Input/Output size:{receivedData.shape[0]},{outputData.shape[0]}")
+            #print_convert_processing(f" [fin] Input/Output size:{receivedData.shape[0]},{outputData.shape[0]}")
             perf = [0, mainprocess_time, postprocess_time]
 
             return outputData, perf
