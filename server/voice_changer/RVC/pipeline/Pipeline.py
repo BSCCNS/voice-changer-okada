@@ -218,10 +218,11 @@ class Pipeline(object):
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")
             #list_to_send = list(feat_projected)[N_PAD:-N_PAD]
-
+            frame = 0
             for row in trim_feat_projected:
                 print(row)
-                send_array(row)
+                send_array(row, frame)
+                frame +=1
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
