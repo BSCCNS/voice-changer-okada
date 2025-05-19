@@ -101,11 +101,11 @@ def _debug_vr(message):
     
     return True
 
-def send_array(array):
+def send_array(array, i):
     #data_list = list(array)
     #for item in data_list:
     with SocketUDP("localhost", debug= None) as socket:
-        socket.send(list(array))
+        socket.send(list(array), i)
 
 if __name__ == "__main__":
 
