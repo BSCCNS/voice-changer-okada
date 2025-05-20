@@ -39,6 +39,9 @@ path_surr = os.getenv('path_surr')
 print(path_surr)
 umap_surrogate = joblib.load(path_surr)
 
+print('Initializing frame counter')
+frame_counter = 0 
+
 class Pipeline(object):
     embedder: Embedder
     inferencer: Inferencer
@@ -218,11 +221,13 @@ class Pipeline(object):
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")
             
-            frame = 0 #FIX ME: this sets the frame to 0 on each chunk
             for row in trim_feat_projected:
                 print(row)
-                send_array(row, frame)
-                frame +=1
+                send_array(row, frame_counter)
+                frame_counter +=1
+                if frame_counter > 1e10:
+                    print('Re-initializing frame counter')
+                    frame_counter = 0
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
