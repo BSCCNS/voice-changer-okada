@@ -74,6 +74,8 @@ class VoiceChangerManager(ServerDeviceCallbacks):
     def __init__(self, params: VoiceChangerParams):
         logger.info("[Voice Changer] VoiceChangerManager initializing...")
         self.params = params
+
+        print(f'[TA debug] params: {self.params}')
         self.voiceChanger: VoiceChanger = None
         self.settings: VoiceChangerManagerSettings = VoiceChangerManagerSettings()
 
@@ -91,8 +93,10 @@ class VoiceChangerManager(ServerDeviceCallbacks):
         if os.path.exists(STORED_SETTING_FILE):
             self.stored_setting = json.load(open(STORED_SETTING_FILE, "r", encoding="utf-8"))
         if "modelSlotIndex" in self.stored_setting:
+            print('[TA debug] here!')
             self.update_settings("modelSlotIndex", self.stored_setting["modelSlotIndex"])
         if "gpu" not in self.stored_setting:
+            print('[TA debug] here too!')
             self.update_settings("gpu", 0)
         # for key, val in self.stored_setting.items():
         #     self.update_settings(key, val)
@@ -366,6 +370,7 @@ class VoiceChangerManager(ServerDeviceCallbacks):
             return receivedData, []
 
         if hasattr(self, "voiceChanger") is True:
+            # TA debug: this is calling VoiceChangerV2. It's setup to return None
             return self.voiceChanger.on_request(receivedData)
         else:
             logger.info("Voice Change is not loaded. Did you load a correct model?")

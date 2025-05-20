@@ -139,7 +139,17 @@ export class VoiceChangerClient {
                     this.currentMediaStream = createDummyMediaStream(this.ctx);
                 } else {
                     this.currentMediaStream = await navigator.mediaDevices.getUserMedia({
+                        // audio: {
+                        //     deviceId: this.setting.audioInput,
+                        //     channelCount: 1,
+                        //     sampleRate: 44100, // safest default on macOS
+                        //     sampleSize: 16,
+                        //     autoGainControl: false,
+                        //     echoCancellation: false,
+                        //     noiseSuppression: false,
+                        // },
                         audio: {
+                            
                             deviceId: this.setting.audioInput,
                             channelCount: 1,
                             sampleRate: this.setting.sampleRate,
@@ -149,6 +159,8 @@ export class VoiceChangerClient {
                             noiseSuppression: this.setting.noiseSuppression,
                         },
                     });
+                    // const track = this.currentMediaStream.getAudioTracks()[0];
+                    // console.log("Actual mic settings:", track.getSettings());
                 }
             } catch (e) {
                 console.warn(e);

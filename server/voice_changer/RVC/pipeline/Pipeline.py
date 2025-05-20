@@ -39,6 +39,9 @@ path_surr = os.getenv('path_surr')
 print(path_surr)
 umap_surrogate = joblib.load(path_surr)
 
+print('Initializing frame counter')
+frame_counter = 0 
+
 class Pipeline(object):
     embedder: Embedder
     inferencer: Inferencer
@@ -213,16 +216,18 @@ class Pipeline(object):
 
             t0 = time.time()
             print(f'----------------- time {t0}')
-            N_PAD = 4 # HARD CODED!!
+            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the guy
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")
-            #list_to_send = list(feat_projected)[N_PAD:-N_PAD]
-            frame = 0
+
             for row in trim_feat_projected:
                 print(row)
-                send_array(row, frame)
-                frame +=1
+                send_array(row, frame_counter)
+                frame_counter +=1
+                if frame_counter > 1e10:
+                    print('Re-initializing frame counter')
+                    frame_counter = 0
             
             # Index - feature抽出
             # if self.index is not None and self.feature is not None and index_rate != 0:
@@ -315,7 +320,9 @@ class Pipeline(object):
             t.record("post-process")
             # torch.cuda.empty_cache()
         # print("EXEC AVERAGE:", t.avrSecs)
-        return audio1, pitchf_buffer, feats_buffer
+        #return audio1, pitchf_buffer, feats_buffer
+        # [TA change] return None instead of audio
+        return None, pitchf_buffer, feats_buffer
 
     def __del__(self):
         del self.embedder
