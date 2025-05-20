@@ -217,8 +217,8 @@ class Pipeline(object):
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")
-            #list_to_send = list(feat_projected)[N_PAD:-N_PAD]
-            frame = 0
+            
+            frame = 0 #FIX ME: this sets the frame to 0 on each chunk
             for row in trim_feat_projected:
                 print(row)
                 send_array(row, frame)
