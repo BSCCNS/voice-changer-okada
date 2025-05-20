@@ -220,7 +220,7 @@ class Pipeline(object):
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
             print(f"shape trim_feat_projected {trim_feat_projected.shape}")
-            
+
             for row in trim_feat_projected:
                 print(row)
                 send_array(row, frame_counter)
