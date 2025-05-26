@@ -40,7 +40,6 @@ df_embed_global = pd.read_csv(ls_3D_path, index_col=0)
 
 # === Plot setup ===
 fig = plt.figure()
-coord_label = fig.text(0.5, 0.02, "", ha='center', fontsize=14, color='black')
 ax = fig.add_subplot(111, projection='3d')
 # ax.set_xlim(-10, 10)
 # ax.set_ylim(-10, 10)
@@ -56,13 +55,36 @@ ax.scatter(df_embed_global['x'],
             s=0.1, 
             alpha=0.075)
 
+coord_label = fig.text(0.5, 0.02, "", ha='center', fontsize=14, color='black')
+
 # Trail and current point
 trail_scatter = ax.scatter([], [], [], s=10, c='red', alpha=0.3)
 head_scatter = ax.scatter([], [], [], s=30, c='red')
 
 # === Animation update ===
+# def update(frame):
+#     if not xyz_buffer:
+#         return trail_scatter, head_scatter, coord_label
+
+#     points = list(xyz_buffer)
+#     *trail, head = points
+
+#     if trail:
+#         trail_x, trail_y, trail_z = zip(*trail)
+#         trail_scatter._offsets3d = (trail_x, trail_y, trail_z)
+#     else:
+#         trail_scatter._offsets3d = ([], [], [])
+
+#     x, y, z = head
+#     head_scatter._offsets3d = ([x], [y], [z])
+
+#     coord_label.set_text(f"({x:.2f}, {y:.2f}, {z:.2f})")
+
+#     return trail_scatter, head_scatter, coord_label
+
 def update(frame):
     if not xyz_buffer:
+        coord_label.set_text("(waiting for data...)")
         return trail_scatter, head_scatter, coord_label
 
     points = list(xyz_buffer)
@@ -76,10 +98,10 @@ def update(frame):
 
     x, y, z = head
     head_scatter._offsets3d = ([x], [y], [z])
-
     coord_label.set_text(f"({x:.2f}, {y:.2f}, {z:.2f})")
 
     return trail_scatter, head_scatter, coord_label
+
 
 ani = FuncAnimation(fig, update, interval=20, blit=False)
 plt.show()
