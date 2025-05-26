@@ -1,6 +1,7 @@
 import socket
 import threading
 import json
+import pandas as pd
 from collections import deque
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -28,11 +29,20 @@ def udp_listener():
 
 threading.Thread(target=udp_listener, daemon=True).start()
 
+ls_3D_path = '/Users/tomasandrade/Documents/BSC/ICHOIR/espacio-latente-maria-main/assets/diffsinger_splitted/embedding_n100_3D.csv'
+df_embed_global = pd.read_csv(ls_3D_path, index_col=0)
+
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.set_xlim(-10, 10)
 ax.set_ylim(-10, 10)
 ax.set_zlim(-10, 10)
+
+ax.scatter(df_embed_global['x'], 
+            df_embed_global['y'], 
+            df_embed_global['z'], 
+            s=0.1, 
+            alpha=0.075)
 
 point_scatter = ax.scatter([], [], [], s=30, color='red')
 
