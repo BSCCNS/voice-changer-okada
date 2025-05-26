@@ -34,9 +34,13 @@ df_embed_global = pd.read_csv(ls_3D_path, index_col=0)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.set_xlim(-10, 10)
-ax.set_ylim(-10, 10)
-ax.set_zlim(-10, 10)
+# ax.set_xlim(-10, 10)
+# ax.set_ylim(-10, 10)
+# ax.set_zlim(-10, 10)
+
+ax.set_xlim([-1,15])
+ax.set_ylim([-1,15])
+ax.set_zlim([-5,5])
 
 ax.scatter(df_embed_global['x'], 
             df_embed_global['y'], 
