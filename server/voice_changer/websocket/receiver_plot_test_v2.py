@@ -35,7 +35,7 @@ def udp_listener():
 # Start UDP listener thread
 threading.Thread(target=udp_listener, daemon=True).start()
 
-ls_3D_path = '/Users/tomasandrade/Documents/BSC/ICHOIR/espacio-latente-maria-main/assets/diffsinger_splitted/embedding_n100_3D.csv'
+ls_3D_path = '/Users/tomasandrade/Documents/BSC/ICHOIR/voice-changer-okada/server/voice_changer/RVC/projection/embedding_n100_3D.csv'
 df_embed_global = pd.read_csv(ls_3D_path, index_col=0)
 
 # === Plot setup ===

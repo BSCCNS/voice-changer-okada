@@ -224,7 +224,7 @@ class RVCr2(VoiceChangerModel):
         embOutputLayer = self.slotInfo.embOutputLayer
         useFinalProj = self.slotInfo.useFinalProj
 
-        print('[TA debug] here I call pipeline exec')
+        #print('[TA debug] here I call pipeline exec')
         try:
             audio_out, self.pitchf_buffer, self.feature_buffer = self.pipeline.exec(
                 sid,

@@ -213,17 +213,22 @@ class Pipeline(object):
             #print(f"shape exportable {exportable.shape}")
             #feats_cpu = feats[0].cpu()
             feat_projected = umap_surrogate.predict(feats[0].cpu())
-            print(f"shape exportable {feat_projected.shape}")
+            #print(f"shape exportable {feat_projected.shape}")
 
-            t0 = time.time()
-            print(f'----------------- time {t0}')
-            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the guy
+            #t0 = time.time()
+            #print(f'----------------- time {t0}')
+            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the gui
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
-            print(f"shape trim_feat_projected {trim_feat_projected.shape}")
+            #print(f"shape trim_feat_projected {trim_feat_projected.shape}")
 
+            # AVERAGE SMOOTHENING
+            #trim_feat_projected = np.mean(trim_feat_projected, axis=0, keepdims=True)
+            #print(trim_feat_projected)
+
+            #SEND ALL POINTS
             for row in trim_feat_projected:
-                print(row)
+                #print(row)
                 send_array(row, self.frame_counter)
                 self.frame_counter +=1
                 if self.frame_counter > 1e10:
