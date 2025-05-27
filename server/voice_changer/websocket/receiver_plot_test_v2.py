@@ -82,5 +82,5 @@ def update(frame):
     return trail_scatter, head_scatter, coord_label
 
 
-ani = FuncAnimation(fig, update, interval=60, blit=False)
+ani = FuncAnimation(fig, update, interval=20, blit=False)
 plt.show()
