@@ -7,6 +7,7 @@ from voice_changer.RVC.embedder.FairseqHubert import FairseqHubert
 from voice_changer.RVC.embedder.FairseqHubertJp import FairseqHubertJp
 from voice_changer.RVC.embedder.OnnxContentvec import OnnxContentvec
 from voice_changer.RVC.embedder.Whisper import Whisper
+#from voice_changer.RVC.embedder.ApplioContentvec import ApplioContentvec
 from voice_changer.utils.VoiceChangerParams import VoiceChangerParams
 
 
@@ -36,6 +37,7 @@ class EmbedderManager:
 
     @classmethod
     def loadEmbedder(cls, embederType: EmbedderType, isHalf: bool, dev: device) -> Embedder:
+        print(f'Inside loadEmbedder, embederType is {embederType}')
         if embederType == "hubert_base":
             try:
                 if cls.params.content_vec_500_onnx_on is False:
@@ -62,5 +64,18 @@ class EmbedderManager:
         elif embederType == "whisper":
             file = cls.params.whisper_tiny
             return Whisper().loadModel(file, dev, isHalf)
+        elif embederType == "applio-contentvec":
+            print('[Embedder Manager] loading applio-contentvec')
+            file = cls.params.applio_contentvec  # Add CLI param for this
+            return ApplioContentvec().loadModel(file, dev, isHalf)
         else:
             return FairseqHubert().loadModel(file, dev, isHalf)
+
+    # @classmethod
+    # def loadEmbedder(cls, embederType: EmbedderType, isHalf: bool, dev: device) -> Embedder:        
+    #     if embederType == "applio-contentvec":
+    #         print('[Embedder Manager] loading applio-contentvec')
+    #         file = cls.params.applio_contentvec  # Add CLI param for this
+    #         return ApplioContentvec().loadModel(file, dev, isHalf)
+    #     else:
+    #         return FairseqHubert().loadModel(file, dev, isHalf)

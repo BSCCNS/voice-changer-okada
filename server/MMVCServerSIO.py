@@ -65,6 +65,8 @@ def setupArgParser():
     parser.add_argument("--rmvpe", type=str, default="pretrain/rmvpe.pt", help="path to rmvpe")
     parser.add_argument("--rmvpe_onnx", type=str, default="pretrain/rmvpe.onnx", help="path to rmvpe onnx")
 
+    parser.add_argument("--applio_contentvec", type=str, help="Path to Applio contentvec directory (.bin and config.json)")
+
     parser.add_argument("--host", type=str, default='127.0.0.1', help="IP address of the network interface to listen for HTTP connections. Specify 0.0.0.0 to listen on all interfaces.")
     parser.add_argument("--allowed-origins", action='append', default=[], help="List of URLs to allow connection from, i.e. https://example.com. Allows http(s)://127.0.0.1:{port} and http(s)://localhost:{port} by default.")
 
@@ -111,6 +113,7 @@ voiceChangerParams = VoiceChangerParams(
     rmvpe_onnx=args.rmvpe_onnx,
     sample_mode=args.sample_mode,
     whisper_tiny=args.whisper_tiny,
+    applio_contentvec = args.applio_contentvec
 )
 vcparams = VoiceChangerParamsManager.get_instance()
 vcparams.setParams(voiceChangerParams)

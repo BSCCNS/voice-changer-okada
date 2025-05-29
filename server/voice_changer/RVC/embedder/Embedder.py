@@ -10,7 +10,7 @@ from voice_changer.RVC.embedder.EmbedderProtocol import EmbedderProtocol
 class Embedder(EmbedderProtocol):
     def __init__(self):
         self.embedderType: EmbedderType = "hubert_base"
-        #self.embedderType: EmbedderType = "contentvec"
+        #self.embedderType: EmbedderType = "applio-contentvec"
         print(f'Inside Embedder : self.embedderType : {self.embedderType}')
         self.file: str
         self.dev: device
