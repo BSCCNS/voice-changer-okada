@@ -120,8 +120,10 @@ class Pipeline(object):
         return pitch, pitchf
 
     def extractFeatures(self, feats, embOutputLayer, useFinalProj):
+        print(f'---------- useFinalProj: {useFinalProj}')
         with autocast(enabled=self.isHalf):
             try:
+                print(f'self.embedder: {self.embedder}')
                 feats = self.embedder.extractFeatures(feats, embOutputLayer, useFinalProj)
                 if torch.isnan(feats).all():
                     raise DeviceCannotSupportHalfPrecisionException()
