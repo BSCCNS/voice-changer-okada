@@ -19,7 +19,9 @@ class ApplioContentvec(Embedder):
         config = HubertConfig.from_pretrained(model_dir)
         model = HubertModel.from_pretrained(model_dir, config=config)
 
-        model = model.to(dev)
+        self.model = model.to("cpu")  # Force to CPU
+
+        #model = model.to(dev)
         model.eval()
         if isHalf:
             model = model.half()
@@ -30,26 +32,23 @@ class ApplioContentvec(Embedder):
     def extractFeatures(
         self, feats: torch.Tensor, embOutputLayer=9, useFinalProj=True
     ) -> torch.Tensor:
-        """
-        Extract features from the Applio ContentVec model.
-        - `embOutputLayer` is ignored because Hugging Face HubertModel doesn't expose intermediate layers directly.
-        - `useFinalProj` is also ignored because this model lacks final_proj.
-        """
-        # Construct dummy attention mask (no padding)
-        attention_mask = torch.ones(feats.shape[:-1], dtype=torch.long).to(self.dev)
+        # Ensure input is on CPU, and in float32
+        feats = feats.detach().to("cpu").float()
+
+        # Create attention mask (no padding), also on CPU
+        attention_mask = torch.ones(feats.shape[:-1], dtype=torch.long, device="cpu")
 
         with torch.no_grad():
             outputs = self.model(
-                feats.to(self.dev),
+                feats,
                 attention_mask=attention_mask,
                 output_hidden_states=True,
                 return_dict=True,
             )
 
-            # If embOutputLayer is valid (e.g., 9), use hidden state from that layer
             if embOutputLayer < len(outputs.hidden_states):
                 feats_out = outputs.hidden_states[embOutputLayer]
             else:
-                feats_out = outputs.last_hidden_state  # fallback
+                feats_out = outputs.last_hidden_state
 
         return feats_out

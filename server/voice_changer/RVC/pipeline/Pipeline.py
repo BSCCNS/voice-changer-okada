@@ -125,7 +125,7 @@ class Pipeline(object):
         print(f'---------- useFinalProj: {useFinalProj}')
         with autocast(enabled=self.isHalf):
             try:
-                print(f'self.embedder: {self.embedder}')
+                #print(f'self.embedder: {self.embedder}')
                 feats = self.embedder.extractFeatures(feats, embOutputLayer, useFinalProj)
                 if torch.isnan(feats).all():
                     raise DeviceCannotSupportHalfPrecisionException()
@@ -232,6 +232,8 @@ class Pipeline(object):
             #filter_data = ft.filter_points_in_box(trim_feat_projected, box_min, box_max)
             filter_data = ft.project_points_to_box(trim_feat_projected, box_min, box_max)
             smooth_data = ft.exponential_moving_average(filter_data)
+
+            print(f"shape of smooth_data {smooth_data.shape}")
 
             #trim_feat_projected = np.mean(trim_feat_projected, axis=0, keepdims=True)
             #print(trim_feat_projected)
