@@ -35,11 +35,11 @@ def udp_listener():
 # Start UDP listener thread
 threading.Thread(target=udp_listener, daemon=True).start()
 
-ls_3D_path = '/Users/tomasandrade/Documents/BSC/ICHOIR/espacio-latente-maria-main/assets/diffsinger_splitted/embedding_n100_3D.csv'
+ls_3D_path = '/Users/tomasandrade/Documents/BSC/ICHOIR/voice-changer-okada/server/voice_changer/RVC/projection/embedding_n100_3D.csv'
 df_embed_global = pd.read_csv(ls_3D_path, index_col=0)
 
 # === Plot setup ===
-fig = plt.figure()
+fig = plt.figure(figsize=(8,8))
 coord_label = fig.text(0.5, 0.02, "", ha='center', fontsize=14, color='black')
 ax = fig.add_subplot(111, projection='3d')
 # ax.set_xlim(-10, 10)
@@ -82,5 +82,5 @@ def update(frame):
     return trail_scatter, head_scatter, coord_label
 
 
-ani = FuncAnimation(fig, update, interval=60, blit=False)
+ani = FuncAnimation(fig, update, interval=20, blit=False)
 plt.show()

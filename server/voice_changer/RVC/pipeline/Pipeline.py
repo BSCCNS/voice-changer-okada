@@ -22,6 +22,8 @@ from voice_changer.utils.Timer import Timer2
 
 from voice_changer.websocket.socketudp import send_array
 
+from voice_changer.RVC.projection import filter_trajectory as ft
+
 import pandas as pd
 import joblib
 import time
@@ -215,17 +217,28 @@ class Pipeline(object):
             #print(f"shape exportable {exportable.shape}")
             #feats_cpu = feats[0].cpu()
             feat_projected = umap_surrogate.predict(feats[0].cpu())
-            print(f"shape exportable {feat_projected.shape}")
+            #print(f"shape exportable {feat_projected.shape}")
 
-            t0 = time.time()
-            print(f'----------------- time {t0}')
-            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the guy
+            #t0 = time.time()
+            #print(f'----------------- time {t0}')
+            N_PAD = 4 # HARD CODED!! this is the param EXTRA in the gui
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
-            print(f"shape trim_feat_projected {trim_feat_projected.shape}")
+            #print(f"shape trim_feat_projected {trim_feat_projected.shape}")
+            
+            box_min = [0, 4, -2]
+            box_max = [14, 14, 4]
 
-            for row in trim_feat_projected:
-                print(row)
+            #filter_data = ft.filter_points_in_box(trim_feat_projected, box_min, box_max)
+            filter_data = ft.project_points_to_box(trim_feat_projected, box_min, box_max)
+            smooth_data = ft.exponential_moving_average(filter_data)
+
+            #trim_feat_projected = np.mean(trim_feat_projected, axis=0, keepdims=True)
+            #print(trim_feat_projected)
+
+            #SEND ALL POINTS
+            for row in smooth_data:
+                #print(row)
                 send_array(row, self.frame_counter)
                 self.frame_counter +=1
                 if self.frame_counter > 1e10:
