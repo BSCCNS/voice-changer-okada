@@ -38,7 +38,7 @@ class FairseqHubert(Embedder):
         }
 
         with torch.no_grad():
-            print(f'[TA debug] inside FairseqHubert: ----- model: {self.model}')
+            #print(f'[TA debug] inside FairseqHubert: ----- model: {self.model}')
             logits = self.model.extract_features(**inputs)
 
             # TA - getting logits

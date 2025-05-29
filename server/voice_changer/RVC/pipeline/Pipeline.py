@@ -122,10 +122,10 @@ class Pipeline(object):
         return pitch, pitchf
 
     def extractFeatures(self, feats, embOutputLayer, useFinalProj):
-        print(f'---------- useFinalProj: {useFinalProj}')
+        #print(f'---------- useFinalProj: {useFinalProj}')
         with autocast(enabled=self.isHalf):
             try:
-                print(f'self.embedder: {self.embedder}')
+                #print(f'self.embedder: {self.embedder}')
                 feats = self.embedder.extractFeatures(feats, embOutputLayer, useFinalProj)
                 if torch.isnan(feats).all():
                     raise DeviceCannotSupportHalfPrecisionException()
@@ -224,7 +224,7 @@ class Pipeline(object):
             N_PAD = 4 # HARD CODED!! this is the param EXTRA in the gui
             trim_feat_projected = feat_projected[N_PAD:-N_PAD] #numpy array
 
-            #print(f"shape trim_feat_projected {trim_feat_projected.shape}")
+            print(f"shape trim_feat_projected {trim_feat_projected.shape}")
             
             box_min = [0, 4, -2]
             box_max = [14, 14, 4]
